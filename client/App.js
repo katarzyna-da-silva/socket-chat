@@ -2,21 +2,18 @@
 //tworzenie czatu public, importowanie wszystkich modulow
 // zaimportowanie react, i modul socket.io, dzieki niemu laczymy server pracujacy w czasie rzeczywistym
 import React, { Component } from 'react';
-import { hot } from react-hot-loader;
-import styles from './App.css';
+import { hot } from 'react-hot-loader';
+import io from 'socket.io-client';
+
+import styles from './css/App.css';
+
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
 import UsersList from './UsersList';
 import UserForm from './UserForm';
-import io from 'socket.io-client';
+
 const socket = io('/'); // nawiazanie polaczenie przez arg. (io)  zaimportowanie modulu u gory, => jesli wstawimy id => arg. dla prywatnych wiadomosci
-
 // definiowanie klasy i wyeksportowanie na zewnatrz modulu dla komponentow
-class App extends Component {
-
-};
-
-export default hot(module)(App); // App opakowane jest w funkcje hot => react-hot-loader 
 
 // konstruktor dla poczatkowego stanu aplikacji :
 class App extends Component {
@@ -25,10 +22,43 @@ class App extends Component {
         this.state = { users: [], message: [], text: '', name: '' };
     } // users - komponent UserList // messages => dla komponentu MessagesList,  text => nasza wiadomosc, name => imie ktore zostanie wpisane w czacie 
 
+    // implementacja funkcji nasluchujacej na wiadomosci : zwraca metody messageReceive, i chatUpdate,
+    componentDidMount() {
+        socket.on('message', message => this.messageReceive(message));
+        socket.on('update', ({ users }) => this.chatUpdate(users));
+    }
+    // implemetacja funkcji obslugi formularza i wysylania wiadomosci 
+    //  metoda odbiera wiadomość, a następnie aktualizuje stan wiadomości.
+    messageReceive(message) {
+        const messages = [message, ...this.state.messages];
+        this.setState({ messages });
+    }
+    //  Skorzystaliśmy tutaj z operatora spread (...), a następnie na podstawie istniejącej już tablicy (this.state.messages) 
+    //mamy nowa tablice, z kolejną wiadomościa. Metoda this.setState aktualizuje stan aplikacji, i metode render.
+
+    // metoda wykonuje to samo, co poprzednia, tylko bez modyfikowania danych, tu nie dodajemy jedynie usera do stanu 
+    // metoda każdorazowo wysyla tablice z aktualizacja listy uzytkownikow 
+    chatUpdate(users) {
+        this.setState({ users });
+    }
+
+    // Metoda ta wysyla wiadomosci do serwera, Przed wyslaniem, aktualizuje stan aplikacji, i emituje wiadomosc,ktora wyswietli sie uzytkownikom
+
+    handleMessageSubmit(message) {
+        const messages = [message, ...this.state.messages];
+        this.setState({ messages });
+        socket.emit('message', message);
+    }
+
+    // Metoda tworzy nowego uzytkownika czatu,i wysyla informacje do serwera, ktory powiadomi uzytkownikow ze dolaczylismy do czata
+    handleUserSubmit(name) {
+        this.setState({ name });
+        socket.emit('join', name);
+    }
+
     render() { // renderowanie zwraca =>  
-        return this.state.name !== '' ? ( //(warunek do sprawdzenia) 
-            this.renderLayout()  // przypadek prawdziwy
-        ) : this.renderUserForm()  // falszywy 
+        return this.state.name !== '' ?  //(warunek do sprawdzenia) 
+            this.renderLayout() : this.renderUserForm();  //przypadek prawdziwy i falszywy 
     } // w zaleznosci od tego jaka wartosc przechowuje this.state.name to taka renderuje aplikacje, lub jesli nie ma zadnego imienia wpisanego w '' 
     // zwroci UserForm zeby mozna bylo jeszcze raz wpisac swoje imie 
 
@@ -69,42 +99,10 @@ class App extends Component {
 
     // druga implementacja : wyswietlanie formularza uzytkownika : 
     renderUserForm() {
-        return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
+        return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />);
         // Komponent UserForm => zwraca props onUserSubmit, który ma za zadanie obsłużyć potwierdzenie wejścia użytkownika do czatu.
         // oraz przekazujemy handleUserSubmit, nie zaimplementowanej metody jeszcze, ktora przyjmuje imie uzytkownika ktora zostanie wpisana
     };
-
-    // implementacja funkcji nasluchujacej na wiadomosci : zwraca metody messageReceive, i chatUpdate,
-    componentDidMount() {
-        socket.on('message', message => this.messageReceive(message));
-        socket.on('update', ({ users }) => this.chatUpdate(users));
-    }
-    // implemetacja funkcji obslugi formularza i wysylania wiadomosci 
-    //  metoda odbiera wiadomość, a następnie aktualizuje stan wiadomości.
-    messageReceive(message) {
-        const messages = [message, ...this.state.messages];
-        this.setState({ messages });
-    }
-    //  Skorzystaliśmy tutaj z operatora spread (...), a następnie na podstawie istniejącej już tablicy (this.state.messages) 
-    //mamy nowa tablice, z kolejną wiadomościa. Metoda this.setState aktualizuje stan aplikacji, i metode render.
-
-    // metoda wykonuje to samo, co poprzednia, tylko bez modyfikowania danych, tu nie dodajemy jedynie usera do stanu 
-    // metoda każdorazowo wysyla tablice z aktualizacja listy uzytkownikow 
-    chatUpdate(users) {
-        this.setState({ users });
-    }
-
-    // Metoda ta wysyla wiadomosci do serwera, Przed wyslaniem, aktualizuje stan aplikacji, i emituje wiadomosc,ktora wyswietli sie uzytkownikom
-
-    handleMessageSubmit(message) {
-        const messages = [message, ...this.state.messages];
-        this.setState({ messages });
-        socket.emit('message', message);
-    }
-
-    // Metoda tworzy nowego uzytkownika czatu,i wysyla informacje do serwera, ktory powiadomi uzytkownikow ze dolaczylismy do czata
-    handleUserSubmit(name) {
-        this.setState({ name });
-        socket.emit('join', name);
-    }
 };
+
+export default hot(module)(App); // App opakowane jest w funkcje hot => react-hot-loader 

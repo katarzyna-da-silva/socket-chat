@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 // klasa ktora zarzadza uzytkownikami korzystajacymi z czatu => konstruktor z iniciacja tablicy : 
 // zawiera 4 metody 
 class UsersService {

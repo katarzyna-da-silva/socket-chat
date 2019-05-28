@@ -9,7 +9,7 @@ const UsersService = require('./UsersService');
 const usersService = new UsersService();
 // tworzenie aplikacji => tworzenie serweru http i podpinanie socketu.io: 
 const app = express();
-const server = http.createServer(app);
+const server = http.createServer(App);
 
 // serwowane pliki => public
 app.use(express.static(`${__dirname}/public`));

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styles from './MessageForm.css';
-
 // komponent message
 // konstruktor => stan poczatkowy komponentu 
 class MessageForm extends Component {

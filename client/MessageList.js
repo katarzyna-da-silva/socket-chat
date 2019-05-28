@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MessageList.css';
-
+import styles from './css/MessageList.css';
 // komponent => wyswietlanie wiadomosci : 
 
 const Message = props => (
