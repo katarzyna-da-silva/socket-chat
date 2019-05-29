@@ -3,14 +3,14 @@
 const express = require('express')();
 const http = require('http');
 const socketIo = require('socket.io');
-// dodaje modul userservice + instacje klasy UsersSerive
-const io = socketIo(server);
 const UsersService = require('./UsersService');
-const usersService = new UsersService();
-// tworzenie aplikacji => tworzenie serweru http i podpinanie socketu.io: 
 const app = express();
 const server = http.createServer(App);
+// dodaje modul userservice + instacje klasy UsersSerive
+const io = socketIo(server);
 
+const usersService = new UsersService();
+// tworzenie aplikacji => tworzenie serweru http i podpinanie socketu.io: 
 // serwowane pliki => public
 app.use(express.static(`${__dirname}/public`));
 

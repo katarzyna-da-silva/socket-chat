@@ -23,7 +23,7 @@ module.exports = (env) => {
         entry: './client/index.js',
         output: {
             path: path.resolve(__dirname, 'public'),
-            filename: 'app.bundle.js'
+            filename: './public/app.bundle.js'
         },
         module: {
             rules: [{
