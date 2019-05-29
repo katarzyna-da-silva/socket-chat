@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --env production",
-    "start": "webpack-dev-server --hot --env development"
+    "start": "webpack-dev-server --hot --env development",
+    "build": "webpack --env production"
+    
   },
   "author": "katarzyna-da-silva",
   "license": "ISC",

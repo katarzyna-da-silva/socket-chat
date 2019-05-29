@@ -35,7 +35,9 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.css$/,
-                    use: [{loader: 'style-loader'},
+                    use: [{
+                        loader: 'style-loader'
+                    },
                         {
                             loader: 'css-loader',
                             options: {
@@ -46,7 +48,6 @@ module.exports = (env) => {
                 }
             ]
         },
-        plugins: plugins,
         devServer: {
             proxy: {
                 '/socket.io': {
@@ -54,6 +55,7 @@ module.exports = (env) => {
                     ws: true
                 }
             }
-        }
+        },
+        plugins: plugins
     }
 }

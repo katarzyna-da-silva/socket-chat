@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import io from 'socket.io-client';
 
-import styles from './css/App.css';
+import styles from './App.css';
 
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
@@ -57,8 +57,9 @@ class App extends Component {
     }
 
     render() { // renderowanie zwraca =>  
-        return this.state.name !== '' ?  //(warunek do sprawdzenia) 
-            this.renderLayout() : this.renderUserForm();  //przypadek prawdziwy i falszywy 
+        return this.state.name !== '' ?  (//(warunek do sprawdzenia) 
+            this.renderLayout() 
+            ) : this.renderUserForm();  //przypadek prawdziwy i falszywy 
     } // w zaleznosci od tego jaka wartosc przechowuje this.state.name to taka renderuje aplikacje, lub jesli nie ma zadnego imienia wpisanego w '' 
     // zwroci UserForm zeby mozna bylo jeszcze raz wpisac swoje imie 
 
@@ -102,7 +103,7 @@ class App extends Component {
         return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />);
         // Komponent UserForm => zwraca props onUserSubmit, który ma za zadanie obsłużyć potwierdzenie wejścia użytkownika do czatu.
         // oraz przekazujemy handleUserSubmit, nie zaimplementowanej metody jeszcze, ktora przyjmuje imie uzytkownika ktora zostanie wpisana
-    };
+    }
 };
 
 export default hot(module)(App); // App opakowane jest w funkcje hot => react-hot-loader 

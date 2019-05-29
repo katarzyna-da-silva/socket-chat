@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './UsersList.css';
-import styles from './css/UsersList.css';
 // wyswietlanie listy uzytkownikow 
 // kompon. reprezentacyjne nie maja metody render, sa to funkcje, ktore przyjmuja propsy
 
@@ -24,9 +23,5 @@ const UsersList = props => (
     </div>
 );
 
-// ilosc uzytkownikow odczytujemy z length....
-<div className={styles.UsersOnline}>
-    {props.users.length} people online
-</div>
 
-export default UserSList;
+export default UsersList;

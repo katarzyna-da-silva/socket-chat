@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 // jesli polaczenie nastapi nastapi callback dla ( drugi arg. metody => .on(socket))
 // funkcja rejestruje zdarzenie ktora w odpowiedzi klient moze zobaczyc 
 //arg socket = to nowa osoba na czacie
-io.on('conection', (socket) => {
+io.on('connection', (socket) => {
     //  wewnatrz funkcji tworzymy funkcje na rozne zdarzenia : 
     // nasluchiwanie klienta na wiadomosc wejscia do czatu 
     socket.on('join', (name) => {
@@ -48,7 +48,7 @@ io.on('conection', (socket) => {
     //wysylanie wiadomosci : 
     // socket => arg. => uzytkownik 
     socket.on('message', (message) => {
-        const { name } = usersService.getUserById(socket.id); //wyszukuje uzytkownika chcacego wyslac wiadomosc po id
+        const {name} = usersService.getUserById(socket.id); //wyszukuje uzytkownika chcacego wyslac wiadomosc po id
         socket.broadcast.emit('message', {
             text: message.text,  // wysylanie tekstu from => nazwa uzytkownika 
             from: name // wyszukiwanie imienia uzytkownika przez destrukturyzacje (const {name} = …), 
