@@ -19,7 +19,7 @@ const socket = io('/'); // nawiazanie polaczenie przez arg. (io)  zaimportowanie
 class App extends Component {
     constructor(props) {
         super(props); // ?????????????????
-        this.state = { users: [], message: [], text: '', name: '' };
+        this.state = { users: [], messages: [], text: '', name: '' };
     } // users - komponent UserList // messages => dla komponentu MessagesList,  text => nasza wiadomosc, name => imie ktore zostanie wpisane w czacie 
 
     // implementacja funkcji nasluchujacej na wiadomosci : zwraca metody messageReceive, i chatUpdate,
